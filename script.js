@@ -25,10 +25,21 @@ function createButton(op, symbol, cls=null){
     container.appendChild(button);
 }
 
-const build = (obj,cls) => {
-    Object.keys(obj).map(key => createButton(key,obj[key],cls))
+function buildCalculator(){
+    const build = (obj,cls) => {
+        Object.keys(obj).map(key => createButton(key,obj[key],cls))};
+    build(numButtons,null);
+    build(opButtons,"op-btn");
+    createButton("eq","=","eq-btn");
 }
 
-build(numButtons,null);
-build(opButtons,"op-btn");
-createButton("eq","=","eq-btn");
+const add      = (a,b) => {return a + b}
+const subtract = (a,b) => {return a - b}
+const multiply = (a,b) => {return a * b}
+const divide   = (a,b) => {return a / b}
+
+function operate(op,a,b){
+    return op(a,b);
+}
+
+buildCalculator();
