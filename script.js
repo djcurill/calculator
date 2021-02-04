@@ -3,7 +3,7 @@ const NUMBERS = [..."0123456789"];
 const opButtons = {
     "plus"     : "+",
     "minus"    : "-",
-    "multiply" : "x",
+    "multiply" : "X",
     "divide"   : "/",
     "clear"    : "C",
 }
@@ -18,10 +18,10 @@ const numButtons = {
 const container = document.querySelector("div.calculator");
 
 function createButton(op, symbol, cls=null){
-
     let button = document.createElement("button");
     button.textContent = symbol;
     button.style.gridArea = op;
+    button.classList.add(cls);
     container.appendChild(button);
 }
 
@@ -30,5 +30,5 @@ const build = (obj,cls) => {
 }
 
 build(numButtons,null);
-build(opButtons,null);
-createButton("eq","=");
+build(opButtons,"op-btn");
+createButton("eq","=","eq-btn");
