@@ -4,8 +4,17 @@ body, html {
     justify-content: center;
 }
 
-.container{
+.calculator{
     display: grid;
+    grid-template-columns: repeat(4,1fr);
+    grid-template-rows: repeat(6,1fr);
+    grid-template-areas: 
+        "top   top   top     top"
+        "seven eight nine    plus"
+        "four  five  six     minus"
+        "one   two   three   multiply"
+        "sgn   zero  decimal divide"
+        "eq    eq    eq      clear";
     width: 300px;
     height: 400px;
     border: 1px solid black;
