@@ -1,5 +1,6 @@
 function createButton(op, symbol, cls=null){
     let button = document.createElement("button");
+    button.addEventListener("click",handleNumberButton);
     button.textContent = symbol;
     button.style.gridArea = op;
     button.classList.add(cls);
@@ -51,8 +52,11 @@ const operations = {
     "X":   (a,b) =>  {return a * b},
     "/":   (a,b) =>  {return a / b},
     "+/-": ()  =>  {(sgn === "+") ? sgn = "-" : sgn = "+"},
-    "C":   ()  => clear(),
-    "=":   (op, a,b) => {return this[op](a,b)}
+    "C":   ()  => clear()
+}
+
+function operate(op,a,b){
+    return String(operations[op](Number(a),Number(b)));
 }
 
 
@@ -69,11 +73,13 @@ function handleNumberButton(e){
 
     if (input === "C" || input === "+/-"){
         operations(input);
+        updateDisplay();
     }
     else if (NUMBERS.includes(input)){
         if (input !== "." || !displayNum.includes(".")){
             displayNum = String(Number(displayNum + input));
         }
+        updateDisplay();
     }
     else if (OPERATORS.includes(input)){
         op = input;
@@ -81,10 +87,11 @@ function handleNumberButton(e){
         displayNum = "";
     }
     else{
-        displayNum = operations["="](op,a,b);
+        displayNum = operate(op,storedNum,displayNum);
         storedNum  = null;
+        updateDisplay();
     }
-    updateDisplay();
+    
 }
 
 
