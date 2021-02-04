@@ -1,32 +1,3 @@
-const NUMBERS = [..."0123456789"];
-const OPERATORS = [..."+-X/"];
-
-const opButtons = {
-    "plus"     : "+",
-    "minus"    : "-",
-    "multiply" : "X",
-    "divide"   : "/",
-    "clear"    : "C",
-}
-
-const numButtons = {
-    "sgn"     : "+/-",
-    "decimal" : ".",
-    "zero"    : "0", "one": "1", "two": "2",   "three": "3", "four": "4",
-    "five"    : "5", "six": "6", "seven": "7", "eight": "8", "nine": "9"
-}
-
-const operations = {
-    "+":   (a,b) =>  {return a + b},
-    "-":   (a,b) =>  {return a - b},
-    "X":   (a,b) =>  {return a * b},
-    "/":   (a,b) =>  {return a / b},
-    "+/-": ()  =>  {(sgn === "+") ? sgn = "-" : sgn = "+"},
-    "C":   ()  => clear(),
-    "=":   (op, a,b) => {return this[op](a,b)}
-}
-
-
 function createButton(op, symbol, cls=null){
     let button = document.createElement("button");
     button.textContent = symbol;
@@ -54,6 +25,34 @@ function clear(){
 
 function updateDisplay(){
     output.textContent = Number(sgn + displayNum);
+}
+
+const NUMBERS = [..."0123456789"];
+const OPERATORS = [..."+-X/"];
+
+const opButtons = {
+    "plus"     : "+",
+    "minus"    : "-",
+    "multiply" : "X",
+    "divide"   : "/",
+    "clear"    : "C",
+}
+
+const numButtons = {
+    "sgn"     : "+/-",
+    "decimal" : ".",
+    "zero"    : "0", "one": "1", "two": "2",   "three": "3", "four": "4",
+    "five"    : "5", "six": "6", "seven": "7", "eight": "8", "nine": "9"
+}
+
+const operations = {
+    "+":   (a,b) =>  {return a + b},
+    "-":   (a,b) =>  {return a - b},
+    "X":   (a,b) =>  {return a * b},
+    "/":   (a,b) =>  {return a / b},
+    "+/-": ()  =>  {(sgn === "+") ? sgn = "-" : sgn = "+"},
+    "C":   ()  => clear(),
+    "=":   (op, a,b) => {return this[op](a,b)}
 }
 
 
@@ -90,4 +89,5 @@ function handleNumberButton(e){
 
 
 buildCalculator();
+
 
