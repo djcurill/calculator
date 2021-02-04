@@ -24,10 +24,16 @@ body, html {
 }
 
 .output{
+    display: flex;
     grid-area: top;
     background-color: rgb(114, 105, 105);
     border: 0.001em solid black;
     color: #F5BFB8;
+    font-size: 3rem;
+    justify-content: flex-end;
+    align-items: end;
+    padding-right: 10px;
+    padding-bottom: 5px;
 }
 
 button{
