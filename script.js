@@ -18,14 +18,14 @@ function buildCalculator(){
 }
 
 function clear(){
-    displayNum = "0";
     sgn        = "+";
+    displayNum = sgn + "0";
     storedNum  = null;
     op         = null;
 }
 
 function updateDisplay(){
-    output.textContent = Number(sgn + displayNum);
+    output.textContent = Number(displayNum);
 }
 
 const NUMBERS = [..."0123456789"];
@@ -50,19 +50,17 @@ const operations = {
     "+":   (a,b) =>  {return a + b},
     "-":   (a,b) =>  {return a - b},
     "X":   (a,b) =>  {return a * b},
-    "/":   (a,b) =>  {return a / b},
-    "+/-": ()  =>  {(sgn === "+") ? sgn = "-" : sgn = "+"},
-    "C":   ()  => clear()
+    "/":   (a,b) =>  {return a / b}
 }
 
 function operate(op,a,b){
+    console.log(a);
+    console.log(b);
     return String(operations[op](Number(a),Number(b)));
 }
 
-
-
-let displayNum  = "0";
 let sgn         = "+";
+let displayNum  = sgn + "0";
 let storedNum   = null;
 let op          = null;
 const container = document.querySelector("div.calculator");
@@ -71,8 +69,14 @@ const output    = document.querySelector("div.output");
 function handleNumberButton(e){
     let input = e.target.textContent;
 
-    if (input === "C" || input === "+/-"){
-        operations(input);
+    if (input === "C"){
+        clear();
+        updateDisplay();
+    }
+    else if (input === "+/-"){
+        let temp = sgn;
+        sgn = (sgn === "+") ? "-" : "+";
+        displayNum = displayNum.replace(temp, sgn);
         updateDisplay();
     }
     else if (NUMBERS.includes(input)){
@@ -85,6 +89,7 @@ function handleNumberButton(e){
         op = input;
         storedNum = displayNum;
         displayNum = "";
+        sgn = "+";
     }
     else{
         displayNum = operate(op,storedNum,displayNum);
