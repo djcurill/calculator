@@ -1,6 +1,6 @@
 function createButton(op, symbol, cls=null){
     let button = document.createElement("button");
-    button.addEventListener("click",handleNumberButton);
+    button.addEventListener("click",logic);
     button.textContent = symbol;
     button.style.gridArea = op;
     button.classList.add(cls);
@@ -14,7 +14,11 @@ function buildCalculator(){
     build(opButtons,"op-btn");
     createButton("eq","=","eq-btn");
     clear();
-    updateDisplay();
+    display(displayNum);
+}
+
+function sign(num){
+    return (Math.sign(num) > 0) ? "+" : "-";
 }
 
 function clear(){
@@ -24,8 +28,8 @@ function clear(){
     op         = null;
 }
 
-function updateDisplay(){
-    output.textContent = Number(displayNum);
+function display(num){
+    output.textContent = Number(num);
 }
 
 const NUMBERS = [..."0123456789"];
@@ -54,8 +58,6 @@ const operations = {
 }
 
 function operate(op,a,b){
-    console.log(a);
-    console.log(b);
     return String(operations[op](Number(a),Number(b)));
 }
 
@@ -63,27 +65,32 @@ let sgn         = "+";
 let displayNum  = sgn + "0";
 let storedNum   = null;
 let op          = null;
+let result      = null;
 const container = document.querySelector("div.calculator");
 const output    = document.querySelector("div.output");
 
-function handleNumberButton(e){
+function logic(e){
     let input = e.target.textContent;
 
     if (input === "C"){
         clear();
-        updateDisplay();
+        display(displayNum);
     }
     else if (input === "+/-"){
         let temp = sgn;
         sgn = (sgn === "+") ? "-" : "+";
         displayNum = displayNum.replace(temp, sgn);
-        updateDisplay();
+        display(displayNum);
     }
     else if (NUMBERS.includes(input)){
-        if (input !== "." || !displayNum.includes(".")){
+        if (result !== null){
+            displayNum = Number(sgn + "0" + input);
+            result = null;
+        }
+        else if (input !== "." || !displayNum.includes(".")){
             displayNum = String(Number(displayNum + input));
         }
-        updateDisplay();
+        display(displayNum);
     }
     else if (OPERATORS.includes(input)){
         op = input;
@@ -92,9 +99,10 @@ function handleNumberButton(e){
         sgn = "+";
     }
     else{
-        displayNum = operate(op,storedNum,displayNum);
-        storedNum  = null;
-        updateDisplay();
+        result = operate(op,storedNum,displayNum);
+        clear();
+        display(result);
+        displayNum = sign(result) + result;
     }
     
 }
