@@ -7,12 +7,11 @@ let storedNum   = null;
 let op          = null;
 let result      = null;
 
-const container = document.querySelector("div.calculator");
 const output    = document.querySelector("div.output");
 
 
-function round(number, pow=3) {
-    return Math.round(number * 10**pow) / 10**pow;
+function round(number, n=3) {
+    return Math.round(number * 10**n) / 10**n;
   }
 
 function sign(num){
@@ -23,7 +22,7 @@ function isInt(num){
     return num % 1 === 0;
 }
 
-function clear(){
+function wipe(){
     sgn        = "+";
     displayNum = sgn + "0";
     storedNum  = null;
@@ -32,6 +31,44 @@ function clear(){
 
 function display(num){
     output.textContent = Number(num);
+}
+
+function clear(){
+    wipe();
+    display(displayNum);
+}
+
+function changeSign(){
+    let temp = sgn;
+    sgn = (sgn === "+") ? "-" : "+";
+    displayNum = displayNum.replace(temp, sgn);
+    display(displayNum);
+}
+
+function appendNumber(event){
+    let num = event.target.textContent;
+    if (result !== null){
+        displayNum = Number(sgn + "0" + num);
+        result = null;
+    }
+    else if (num !== "." || !displayNum.includes(".")){
+        displayNum = String(Number(displayNum + num));
+    }
+    display(displayNum);
+}
+
+function assignOp(event){
+    op = event.target.textContent;
+    storedNum = displayNum;
+    displayNum = "";
+    sgn = "+";
+}
+
+function compute(){
+    result = operate(op,storedNum,displayNum);
+    wipe();
+    display(result);
+    displayNum = sign(result) + result;
 }
 
 const operations = {
@@ -47,46 +84,19 @@ function operate(op,a,b){
     return String(result);
 }
 
-function logic(e){
-    let input = e.target.textContent;
 
-    if (input === "C"){
-        clear();
-        display(displayNum);
-    }
-    else if (input === "+/-"){
-        let temp = sgn;
-        sgn = (sgn === "+") ? "-" : "+";
-        displayNum = displayNum.replace(temp, sgn);
-        display(displayNum);
-    }
-    else if (NUMBERS.includes(input)){
-        if (result !== null){
-            displayNum = Number(sgn + "0" + input);
-            result = null;
-        }
-        else if (input !== "." || !displayNum.includes(".")){
-            displayNum = String(Number(displayNum + input));
-        }
-        display(displayNum);
-    }
-    else if (OPERATORS.includes(input)){
-        op = input;
-        storedNum = displayNum;
-        displayNum = "";
-        sgn = "+";
-    }
-    else{
-        result = operate(op,storedNum,displayNum);
-        clear();
-        display(result);
-        displayNum = sign(result) + result;
-    }
-    
-}
-
-buildCalculator();
-clear();
+wipe();
 display(displayNum);
+document.querySelectorAll(`button[data-key="num"]`)
+        .forEach(btn => btn.addEventListener("click", appendNumber));
+
+document.querySelectorAll(`button[data-key="op"]`)
+        .forEach(btn => btn.addEventListener("click", assignOp));
+
+document.querySelector(`button[data-key="clear"]`).addEventListener("click", clear);
+document.querySelector(`button[data-key="sgn"]`).addEventListener("click",changeSign);
+document.querySelector(`button[data-key="eq"]`).addEventListener("click",compute);
+
+
 
 
