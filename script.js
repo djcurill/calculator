@@ -1,39 +1,11 @@
-function createButton(op, symbol, cls=null){
-    let button = document.createElement("button");
-    button.addEventListener("click",logic);
-    button.textContent = symbol;
-    button.style.gridArea = op;
-    button.classList.add(cls);
-    container.appendChild(button);
-}
-
-function buildCalculator(){
-    const build = (obj,cls) => {
-        Object.keys(obj).map(key => createButton(key,obj[key],cls))};
-    build(numButtons,null);
-    build(opButtons,"op-btn");
-    createButton("eq","=","eq-btn");
-    clear();
-    display(displayNum);
-}
-
-function sign(num){
-    return (Math.sign(num) > 0) ? "+" : "-";
-}
-
-function clear(){
-    sgn        = "+";
-    displayNum = sgn + "0";
-    storedNum  = null;
-    op         = null;
-}
-
-function display(num){
-    output.textContent = Number(num);
-}
-
 const NUMBERS = [..."0123456789"];
 const OPERATORS = [..."+-X/"];
+const MAXLENGTH = 10;
+let sgn         = "+";
+let displayNum  = sgn + "0";
+let storedNum   = null;
+let op          = null;
+let result      = null;
 
 const opButtons = {
     "plus"     : "+",
@@ -50,6 +22,49 @@ const numButtons = {
     "five"    : "5", "six": "6", "seven": "7", "eight": "8", "nine": "9"
 }
 
+const container = document.querySelector("div.calculator");
+const output    = document.querySelector("div.output");
+
+function createButton(op, symbol, cls=null){
+    let button = document.createElement("button");
+    button.addEventListener("click",logic);
+    button.textContent = symbol;
+    button.style.gridArea = op;
+    button.classList.add(cls);
+    container.appendChild(button);
+}
+
+function buildCalculator(){
+    const build = (obj,cls) => {
+        Object.keys(obj).map(key => createButton(key,obj[key],cls))};
+    build(numButtons,null);
+    build(opButtons,"op-btn");
+    createButton("eq","=","eq-btn");
+}
+
+function round(number, pow=3) {
+    return Math.round(number * 10**pow) / 10**pow;
+  }
+
+function sign(num){
+    return (Math.sign(num) > 0) ? "+" : "-";
+}
+
+function isInt(num){
+    return num % 1 === 0;
+}
+
+function clear(){
+    sgn        = "+";
+    displayNum = sgn + "0";
+    storedNum  = null;
+    op         = null;
+}
+
+function display(num){
+    output.textContent = Number(num);
+}
+
 const operations = {
     "+":   (a,b) =>  {return a + b},
     "-":   (a,b) =>  {return a - b},
@@ -58,16 +73,10 @@ const operations = {
 }
 
 function operate(op,a,b){
-    return String(operations[op](Number(a),Number(b)));
+    let result = operations[op](Number(a),Number(b));
+    if (!isInt(result)) (result = round(result,3));
+    return String(result);
 }
-
-let sgn         = "+";
-let displayNum  = sgn + "0";
-let storedNum   = null;
-let op          = null;
-let result      = null;
-const container = document.querySelector("div.calculator");
-const output    = document.querySelector("div.output");
 
 function logic(e){
     let input = e.target.textContent;
@@ -107,7 +116,8 @@ function logic(e){
     
 }
 
-
 buildCalculator();
+clear();
+display(displayNum);
 
 
