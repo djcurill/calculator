@@ -15,7 +15,7 @@ function round(number, n=3) {
   }
 
 function sign(num){
-    return (Math.sign(num) > 0) ? "+" : "-";
+    return (Math.sign(Number(num)) >= 0) ? "" : "-";
 }
 
 function isInt(num){
@@ -23,14 +23,14 @@ function isInt(num){
 }
 
 function wipe(){
-    sgn        = "+";
-    displayNum = sgn + "0";
+    sgn        = "";
+    displayNum = "0";
     storedNum  = null;
     op         = null;
 }
 
 function display(num){
-    output.textContent = Number(num);
+    output.textContent = num;
 }
 
 function clear(){
@@ -40,19 +40,21 @@ function clear(){
 
 function changeSign(){
     let temp = sgn;
-    sgn = (sgn === "+") ? "-" : "+";
+    sgn = (sgn === "") ? "-" : "";
     displayNum = displayNum.replace(temp, sgn);
     display(displayNum);
 }
 
 function appendNumber(event){
     let num = event.target.textContent;
-    if (result !== null){
-        displayNum = Number(sgn + "0" + num);
-        result = null;
+    if (num === "." && !displayNum.includes(".")){
+        displayNum += num;
     }
-    else if (num !== "." || !displayNum.includes(".")){
-        displayNum = String(Number(displayNum + num));
+    else if (Number(displayNum) === 0){
+        displayNum = num;
+    }
+    else{
+        displayNum += num;
     }
     display(displayNum);
 }
@@ -61,14 +63,17 @@ function assignOp(event){
     op = event.target.textContent;
     storedNum = displayNum;
     displayNum = "";
-    sgn = "+";
+    sgn = "";
+    result = "";
 }
 
 function compute(){
     result = operate(op,storedNum,displayNum);
-    wipe();
     display(result);
-    displayNum = sign(result) + result;
+    displayNum = result;
+    storedNum = null;
+    op = null;
+
 }
 
 const operations = {
@@ -79,9 +84,14 @@ const operations = {
 }
 
 function operate(op,a,b){
-    let result = operations[op](Number(a),Number(b));
+    console.log(op)
+    console.log(a)
+    console.log(b)
+    let result = (op === null) ? Number(b) : operations[op](Number(a),Number(b));
+    console.log(result);
     if (!isInt(result)) (result = round(result,3));
-    return String(result);
+    console.log(result);
+    return sign(result) + String(result);
 }
 
 
