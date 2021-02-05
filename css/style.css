@@ -10,11 +10,11 @@ body, html {
     grid-template-columns: repeat(4,1fr);
     grid-template-rows: 1.5fr repeat(5,1fr);
     grid-template-areas: 
-        "top   top   top     top"
+        "display   display   display     display"
         "seven eight nine    plus"
         "four  five  six     minus"
-        "one   two   three   multiply"
-        "sgn   zero  decimal divide"
+        "one   two   three   mult"
+        "sgn   zero  dec     div"
         "eq    eq    eq      clear";
     width: 300px;
     height: 400px;
@@ -25,7 +25,7 @@ body, html {
 
 .output{
     display: flex;
-    grid-area: top;
+    grid-area: display;
     background-color: rgb(114, 105, 105);
     border: 0.001em solid black;
     color: #F5BFB8;
