@@ -7,40 +7,9 @@ let storedNum   = null;
 let op          = null;
 let result      = null;
 
-const opButtons = {
-    "plus"     : "+",
-    "minus"    : "-",
-    "multiply" : "X",
-    "divide"   : "/",
-    "clear"    : "C",
-}
-
-const numButtons = {
-    "sgn"     : "+/-",
-    "decimal" : ".",
-    "zero"    : "0", "one": "1", "two": "2",   "three": "3", "four": "4",
-    "five"    : "5", "six": "6", "seven": "7", "eight": "8", "nine": "9"
-}
-
 const container = document.querySelector("div.calculator");
 const output    = document.querySelector("div.output");
 
-function createButton(op, symbol, cls=null){
-    let button = document.createElement("button");
-    button.addEventListener("click",logic);
-    button.textContent = symbol;
-    button.style.gridArea = op;
-    button.classList.add(cls);
-    container.appendChild(button);
-}
-
-function buildCalculator(){
-    const build = (obj,cls) => {
-        Object.keys(obj).map(key => createButton(key,obj[key],cls))};
-    build(numButtons,null);
-    build(opButtons,"op-btn");
-    createButton("eq","=","eq-btn");
-}
 
 function round(number, pow=3) {
     return Math.round(number * 10**pow) / 10**pow;
