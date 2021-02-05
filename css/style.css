@@ -41,13 +41,22 @@ button{
     background-color: #CFDEF3;
     border: 0.001em solid black;
 }
+button:hover{
+    background-color: #a7bcda;
+}
 
 .op-btn{
     background-color: #F5BFB8;
 }
+.op-btn:hover{
+    background-color: #c69089;
+}
 
 .eq-btn{
     background-color: #9FA686;
+}
+.eq-btn:hover{
+    background-color: #858e66;
 }
 
 
