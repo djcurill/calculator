@@ -87,6 +87,7 @@ function operate(op,a,b){
 
 wipe();
 display(displayNum);
+
 document.querySelectorAll(`button[data-key="num"]`)
         .forEach(btn => btn.addEventListener("click", appendNumber));
 
